@@ -1,0 +1,27 @@
+{
+  "name": "keruyphp/keruy-html",
+  "description": "Flexible fluent PHP DSL for HTML.",
+  "keywords": [
+    "php",
+    "html",
+    "dsl",
+    "fluent",
+    "fluent-api",
+    "flexible"
+  ],
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "KeruyPHP",
+      "email": "keruy@keruy.com.ua"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "KeruyPHP\\KeruyHtml\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.3"
+  }
+}
