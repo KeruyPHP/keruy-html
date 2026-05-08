@@ -5,7 +5,7 @@ Simple fluent PHP DSL for building HTML.
 ## Installation
 
 ```bash
-composer require keruyphp/fluent-html
+composer require keruyphp/keruy-html
 ```
 
 ## Quick start
