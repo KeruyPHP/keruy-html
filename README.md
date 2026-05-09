@@ -82,6 +82,44 @@ echo Html::div(function () {
 
 ## Core methods
 
+### `append()`
+
+`append()` is the universal child API. It accepts strings, nodes, arrays, generators and closures.
+
+String values are treated as text and escaped automatically.
+
+```php
+echo Html::div(function (\KeruyPHP\KeruyHtml\Tags\Tag $div) {
+	$div->append(
+		'Hello ',
+		Html::strong('world'),
+		'!',
+	);
+});
+```
+
+### `text()`
+
+`text()` is the explicit text helper. It is a semantic alias for appending escaped string content.
+
+```php
+echo Html::p(function (\KeruyPHP\KeruyHtml\Tags\Tag $p) {
+	$p->text('Price: ', '100 UAH');
+});
+```
+
+### `raw()`
+
+`raw()` appends trusted HTML fragments without escaping.
+
+```php
+echo Html::div(function (\KeruyPHP\KeruyHtml\Tags\Tag $div) {
+	$div->raw('<strong>Trusted HTML</strong>');
+});
+```
+
+Use `raw()` only for HTML you already trust.
+
 ## Setting attributes and classes
 
 You can add attributes and classes in three common ways.
@@ -156,5 +194,5 @@ echo Html::div(['class' => 'card'], function () {
 ## Notes
 
 - Strings are escaped automatically.
-- Use `Html::raw()` if you need raw HTML.
-- Use `Html::text()` if you want explicit escaped text.
+- Use `HtmlElement::raw()` or `HtmlUtil::raw()` if you need raw HTML.
+- Use `HtmlElement::text()` or `HtmlUtil::text()` if you want explicit escaped text.

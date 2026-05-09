@@ -130,6 +130,16 @@ class HtmlElement implements HtmlNode
         return $this;
     }
 
+    public function raw(string ...$parts): static
+    {
+        return $this->append(...array_map(static fn(string $part): HtmlRaw => HtmlUtil::raw($part), $parts));
+    }
+
+    public function text(string ...$parts): static
+    {
+        return $this->append(...$parts);
+    }
+
     /**
      * @throws JsonException
      */
@@ -147,7 +157,7 @@ class HtmlElement implements HtmlNode
             }
 
             if ($value === true) {
-                $parts[] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+                $parts[] = HtmlUtil::escape($name, ENT_QUOTES);
                 continue;
             }
 
@@ -164,8 +174,8 @@ class HtmlElement implements HtmlNode
 
             $parts[] = sprintf(
                 '%s="%s"',
-                htmlspecialchars($name, ENT_QUOTES, 'UTF-8'),
-                htmlspecialchars((string)$value, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                HtmlUtil::escape($name, ENT_QUOTES),
+                HtmlUtil::escape((string)$value),
             );
         }
 
@@ -213,16 +223,12 @@ class HtmlElement implements HtmlNode
         }
 
         if ($value instanceof Stringable || is_object($value)) {
-            $this->children[] = new HtmlRaw(
-                htmlspecialchars((string)$value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
-            );
+            $this->children[] = HtmlUtil::text((string)$value);
             return;
         }
 
         $str = (string)$value;
-        $this->children[] = $this->rawText
-            ? new HtmlRaw($str)
-            : new HtmlRaw(htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $this->children[] = $this->rawText ? HtmlUtil::raw($str) : HtmlUtil::text($str);
     }
 
     /**
@@ -310,7 +316,6 @@ class HtmlElement implements HtmlNode
 
     private function setAttr(string $name, mixed $value): void
     {
-        // data-* и aria-* всегда перезаписываются
         if (str_starts_with($name, 'data-') || str_starts_with($name, 'aria-')) {
             $this->attrs[$name] = $value;
             return;

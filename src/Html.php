@@ -196,12 +196,7 @@ class Html
 
     public static function doctype(): HtmlRaw
     {
-        return new HtmlRaw('<!DOCTYPE html>' . PHP_EOL);
-    }
-
-    public static function raw(string ...$parts): HtmlRaw
-    {
-        return new HtmlRaw(implode(PHP_EOL, $parts));
+        return HtmlUtil::raw('<!DOCTYPE html>' . PHP_EOL);
     }
 
     public static function registerTag(string $tag, string $class): void
@@ -223,12 +218,5 @@ class Html
         }
 
         return $el;
-    }
-
-    public static function text(string $value): HtmlRaw
-    {
-        return new HtmlRaw(
-            htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
-        );
     }
 }
